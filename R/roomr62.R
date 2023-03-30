@@ -6,7 +6,7 @@ Room <- R6Class(
        size = NULL,
       cells = NULL,
     symbols = NULL,
-    not_used_pairs = NULL,
+    free_pairs = NULL,
     
     initialize = function(size = NA) {
       self$size <- size
@@ -14,7 +14,7 @@ Room <- R6Class(
       self$cells <- expand_grid(row = 1:(self$size - 1), col = 1:(self$size - 1)) %>%
         mutate(first = as.integer(NA), second = as.integer(NA)) %>%
         mutate(avail = list(0:(n - 1)))
-      self$not_used_pairs <- all_pairs(self$size)
+      self$free_pairs <- all_pairs(self$size)
     },
     
     get = function(e) {
@@ -28,7 +28,7 @@ Room <- R6Class(
       self$cells[self$cells$row == e[1] & self$cells$col == e[2], "second"] <- p[2]
       self$cells[self$cells$row == e[1], "avail"]$avail <- lapply(self$cells[self$cells$row == e[1], "avail"]$avail, remove_both, p)
       self$cells[self$cells$col == e[2], "avail"]$avail <- lapply(self$cells[self$cells$col == e[2], "avail"]$avail, remove_both, p)
-      self$not_used_pairs <- self$not_used_pairs[-match(list(p), self$not_used_pairs)]
+      self$free_pairs <- self$free_pairs[-match(list(p), self$free_pairs)]
     },
     
     used_row = function(row) {
@@ -52,10 +52,7 @@ Room <- R6Class(
     },
     
     is_available = function(e, p) {
-      #is_subset(p, self$missing(row = e[1])) && is_subset(p, self$missing(col = e[2]))
-      missing_row <- self$missing_row(row = e[1])
-      missing_col <- self$missing_col(col = e[2])
-      p[1] %in% missing_row && p[2] %in% missing_row && p[1] %in% missing_col && p[2] %in% missing_col
+      p[1] %in% self$cells[self$cells$row == e[1] & self$cells$col == e[2], "avail"]$avail[[1]] && p[2] %in% self$cells[self$cells$row == e[1] & self$cells$col == e[2], "avail"]$avail[[1]]
     }
   ),
   active = list(
@@ -63,6 +60,14 @@ Room <- R6Class(
       E <- self$cells[is.na(self$cells$first), ]
       E <- mapply(c, E$row, E$col, SIMPLIFY = FALSE)
       return(E)
+    },
+    n_filled = function() {
+      self$cells %>%
+        filter(!is.na(first)) %>% 
+        nrow()
+    },
+    volume = function() {
+      round(self$n_filled/choose(max(self$cells$col) + 1, 2), 6)
     }
   )
 )
