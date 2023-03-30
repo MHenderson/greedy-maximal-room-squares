@@ -10,6 +10,8 @@ editor_options:
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
+  message = FALSE,
+  warning = FALSE,
   fig.path = "figure/"
 )
 
@@ -40,7 +42,7 @@ r <- Room$new(size = n)
 
 tic()
 for(e in r$empty_cells) {
-  for(p in r$not_used_pairs) {
+  for(p in r$free_pairs) {
     if(r$is_available(e, p)) {
       r$set(e, p)
       break()
@@ -51,6 +53,12 @@ toc()
 ```
 
 ```{r plot, echo=FALSE}
+library(glue)
+library(scales)
+
+nf <- r$n_filled
+v <- label_percent()(r$volume)
+
 ggplot(data = r$cells %>% pivot_wider(), aes(col, row)) +
   geom_segment(data = grid_lines(n - 1, n - 1), aes(x = x, y = y, xend = xend, yend = yend), size = .1) +
   geom_text(data = r$cells %>% pivot_wider() %>% filter(!is.na(first)), aes(label = paste(first, second, sep = ","))) +
@@ -59,6 +67,9 @@ ggplot(data = r$cells %>% pivot_wider(), aes(col, row)) +
   theme_void() +
   theme(
     legend.position  = "none"
+  ) +
+  labs(
+    title = glue("A maximal partial Room square of order {n}"),
+    subtitle = glue("Number of filled cells: {nf}, Volume: {v}.")
   )
 ```
-

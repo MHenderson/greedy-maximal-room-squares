@@ -13,7 +13,7 @@ r <- Room$new(size = n)
 
 tic()
 for(e in r$empty_cells) {
-  for(p in r$not_used_pairs) {
+  for(p in r$free_pairs) {
     if(r$is_available(e, p)) {
       r$set(e, p)
       break()
@@ -21,7 +21,7 @@ for(e in r$empty_cells) {
   }
 }
 toc()
-#> 0.653 sec elapsed
+#> 0.302 sec elapsed
 ```
 
 ![](figure/plot-1.png)<!-- -->
