@@ -1,5 +1,7 @@
 ---
 output: github_document
+editor_options: 
+  chunk_output_type: console
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
@@ -19,8 +21,10 @@ library(R6)
 library(tictoc)
 library(tidyr)
 
+source(here("R", "all_pairs.R"))
 source(here("R", "grid_lines.R"))
 source(here("R", "is_subset.R"))
+source(here("R", "remove_both.R"))
 source(here("R", "roomr62.R"))
 ```
 
@@ -35,10 +39,11 @@ n <- 10
 r <- Room$new(size = n)
 
 tic()
-for(e in r$empty_cells()) {
-  for(p in r$not_used_pairs()) {
+for(e in r$empty_cells) {
+  for(p in r$not_used_pairs) {
     if(r$is_available(e, p)) {
       r$set(e, p)
+      break()
     }
   }
 }

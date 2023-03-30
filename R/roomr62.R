@@ -6,12 +6,15 @@ Room <- R6Class(
        size = NULL,
       cells = NULL,
     symbols = NULL,
+    not_used_pairs = NULL,
     
     initialize = function(size = NA) {
       self$size <- size
       self$symbols <- 0:(size - 1)
       self$cells <- expand_grid(row = 1:(self$size - 1), col = 1:(self$size - 1)) %>%
-        mutate(first = as.integer(NA), second = as.integer(NA))
+        mutate(first = as.integer(NA), second = as.integer(NA)) %>%
+        mutate(avail = list(0:(n - 1)))
+      self$not_used_pairs <- all_pairs(self$size)
     },
     
     get = function(e) {
@@ -23,6 +26,9 @@ Room <- R6Class(
     set = function(e, p) {
       self$cells[self$cells$row == e[1] & self$cells$col == e[2], "first"] <- p[1]
       self$cells[self$cells$row == e[1] & self$cells$col == e[2], "second"] <- p[2]
+      self$cells[self$cells$row == e[1], "avail"]$avail <- lapply(self$cells[self$cells$row == e[1], "avail"]$avail, remove_both, p)
+      self$cells[self$cells$col == e[2], "avail"]$avail <- lapply(self$cells[self$cells$col == e[2], "avail"]$avail, remove_both, p)
+      self$not_used_pairs <- self$not_used_pairs[-match(list(p), self$not_used_pairs)]
     },
     
     used_row = function(row) {
@@ -50,29 +56,13 @@ Room <- R6Class(
       missing_row <- self$missing_row(row = e[1])
       missing_col <- self$missing_col(col = e[2])
       p[1] %in% missing_row && p[2] %in% missing_row && p[1] %in% missing_col && p[2] %in% missing_col
-    },
-    
+    }
+  ),
+  active = list(
     empty_cells = function() {
       E <- self$cells[is.na(self$cells$first), ]
       E <- mapply(c, E$row, E$col, SIMPLIFY = FALSE)
       return(E)
-    },
-    
-    not_used_pairs =  function() {
-      #n <- max(self$cells$row) + 1
-      # find the pairs already used
-      used_pairs <- self$cells[, c("first", "second")]
-      # construct the set of pairs not used (namely all pairs minus used pairs)
-      x <- combn(0:(self$size - 1), 2)
-      
-      all_pairs <- tibble(
-        first = x[1,],
-        second = x[2,]
-      )
-      
-      anti_join(all_pairs, used_pairs, by = c("first", "second")) %>%
-        mutate(ffs = map2(first, second, c)) %>%
-        pull(ffs)
     }
   )
 )

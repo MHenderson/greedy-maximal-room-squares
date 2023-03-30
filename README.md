@@ -12,15 +12,16 @@ n <- 10
 r <- Room$new(size = n)
 
 tic()
-for(e in r$empty_cells()) {
-  for(p in r$not_used_pairs()) {
+for(e in r$empty_cells) {
+  for(p in r$not_used_pairs) {
     if(r$is_available(e, p)) {
       r$set(e, p)
+      break()
     }
   }
 }
 toc()
-#> 2.295 sec elapsed
+#> 0.653 sec elapsed
 ```
 
 ![](figure/plot-1.png)<!-- -->
