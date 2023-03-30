@@ -1,3 +1,16 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "figure/"
+)
+
 library(dplyr)
 library(ggplot2)
 library(here)
@@ -9,7 +22,14 @@ library(tidyr)
 source(here("R", "grid_lines.R"))
 source(here("R", "is_subset.R"))
 source(here("R", "roomr62.R"))
+```
 
+# more-maximal-room-squares
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+```{r room}
 n <- 10
 
 r <- Room$new(size = n)
@@ -23,7 +43,9 @@ for(e in r$empty_cells()) {
   }
 }
 toc()
+```
 
+```{r plot, echo=FALSE}
 ggplot(data = r$cells %>% pivot_wider(), aes(col, row)) +
   geom_segment(data = grid_lines(n - 1, n - 1), aes(x = x, y = y, xend = xend, yend = yend), size = .1) +
   geom_text(data = r$cells %>% pivot_wider() %>% filter(!is.na(first)), aes(label = paste(first, second, sep = ","))) +
@@ -33,4 +55,5 @@ ggplot(data = r$cells %>% pivot_wider(), aes(col, row)) +
   theme(
     legend.position  = "none"
   )
+```
 
