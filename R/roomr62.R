@@ -7,6 +7,7 @@ Room <- R6Class(
       cells = NULL,
     symbols = NULL,
     free_pairs = NULL,
+    empty_cells = NULL,
     
     initialize = function(size = NA) {
       self$size <- size
@@ -15,6 +16,7 @@ Room <- R6Class(
         mutate(first = as.integer(NA), second = as.integer(NA)) %>%
         mutate(avail = list(0:(n - 1)))
       self$free_pairs <- all_pairs(self$size)
+      self$empty_cells <- all_ordered_pairs(self$size - 1)
     },
     
     get = function(e) {
@@ -29,6 +31,7 @@ Room <- R6Class(
       self$cells[self$cells$row == e[1], "avail"]$avail <- lapply(self$cells[self$cells$row == e[1], "avail"]$avail, remove_both, p)
       self$cells[self$cells$col == e[2], "avail"]$avail <- lapply(self$cells[self$cells$col == e[2], "avail"]$avail, remove_both, p)
       self$free_pairs <- self$free_pairs[-match(list(p), self$free_pairs)]
+      self$empty_cells <- self$empty_cells[-match(list(e), self$empty_cells)]
     },
     
     used_row = function(row) {
@@ -56,11 +59,6 @@ Room <- R6Class(
     }
   ),
   active = list(
-    empty_cells = function() {
-      E <- self$cells[is.na(self$cells$first), ]
-      E <- mapply(c, E$row, E$col, SIMPLIFY = FALSE)
-      return(E)
-    },
     n_filled = function() {
       self$cells %>%
         filter(!is.na(first)) %>% 
