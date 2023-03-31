@@ -19,12 +19,6 @@ Room <- R6Class(
       self$empty_cells <- all_ordered_pairs(self$size - 1)
     },
     
-    get = function(e) {
-      self$cells %>%
-        filter(row == e[1], col == e[2]) %>%
-        select(first, second)
-    },
-    
     set = function(e, p) {
       self$cells[self$cells$row == e[1] & self$cells$col == e[2], "first"] <- p[1]
       self$cells[self$cells$row == e[1] & self$cells$col == e[2], "second"] <- p[2]
