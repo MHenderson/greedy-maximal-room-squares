@@ -34,26 +34,6 @@ Room <- R6Class(
       self$empty_cells <- self$empty_cells[-match(list(e), self$empty_cells)]
     },
     
-    used_row = function(row) {
-      x <- self$cells[self$cells$row == row, c("first", "second")]
-      unique(c(x$first[!is.na(x$first)], x$second[!is.na(x$second)]))
-    },
-    
-    used_col = function(col) {
-      x <- self$cells[self$cells$col == col, c("first", "second")]
-      unique(c(x$first[!is.na(x$first)], x$second[!is.na(x$second)]))
-    },
-    
-    missing_row = function(row = NA) {
-      used <- self$used_row(row = row)
-      setdiff(self$symbols, used)
-    },
-    
-    missing_col = function(col = NA) {
-      used <- self$used_col(col = col)
-      setdiff(self$symbols, used)
-    },
-    
     is_available = function(e, p) {
       p[1] %in% self$cells[self$cells$row == e[1] & self$cells$col == e[2], "avail"]$avail[[1]] && p[2] %in% self$cells[self$cells$row == e[1] & self$cells$col == e[2], "avail"]$avail[[1]]
     }
