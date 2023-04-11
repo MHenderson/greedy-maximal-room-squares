@@ -15,7 +15,7 @@ source(here("R", "roomr62.R"))
 
 # seeds should be kept on disk somewhere so we can easily calculate new ones
 # or simply calculated from the existing data
-i <- 50
+i <- 54
 
 set.seed(i)
 
