@@ -76,24 +76,11 @@ ggplot(data = r$cells %>% pivot_wider(), aes(col, row)) +
 
 # Results
 
-```{r}
-library(dplyr)
-library(here)
-library(readr)
+```{r, echo=FALSE}
+library(knitr)
+library(targets)
 
-results <- read_rds(here("data", "results.rds"))
-meszka <- read_rds(here("data", "meszka-rosa-table.rds"))
+final_results <- tar_read("final_results")
 
-final_results <- results %>%
-  filter(n >= 50) %>%
-  group_by(n) %>%
-  summarise(t3 = max(n_filled)) %>%
-  left_join(meszka) %>%
-  mutate(
-    `t3 - t1` = t3 - t1,
-           r3 = t3/nc2
-  ) %>%
-  select(n, nc2, t1, t2, t3, r1, r2, r3)
-
-print(final_results, n = Inf)
+kable(final_results %>% filter(n >= 50))
 ```
