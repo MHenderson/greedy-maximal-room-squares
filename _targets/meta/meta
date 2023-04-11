@@ -1,0 +1,14 @@
+name|type|data|command|depend|seed|path|time|size|bytes|format|repository|iteration|parent|children|seconds|warnings|error
+all_ordered_pairs|function|9b33b3996cf1de5c|||||||||||||||
+all_pairs|function|0122813d2df60f2b|||||||||||||||
+final_results|stem|811f0fe7888129f1|f0008fec2d2a80da|933266e1e71f32bc|1045401426||t19458.6352743772s|31a986bb097d00c9|1159|rds|local|vector|||0.079||
+grid_lines|function|dda92efd0fc5213b|||||||||||||||
+horiz_lines|function|19853ce620c10b24|||||||||||||||
+is_subset|function|e65db254fe5dcf97|||||||||||||||
+meskza|stem|bde100c1b40b09ae|4257ea9415e6ea4b|bb82a6b2482d199b|248934039||t19458.6339735854s|6d3451f02dac1ea9|728|rds|local|vector|||0.119||
+meszka|stem|bde100c1b40b09ae|4257ea9415e6ea4b|bb82a6b2482d199b|-1990126053||t19458.6342963181s|6d3451f02dac1ea9|728|rds|local|vector|||0.119||
+readme|stem|4d11d079c91b00ce|3ff68f9d68ad5362|4004795af9183ee0|-165896733|README.md*README.Rmd|t19458.6397733754s|a9fc2c8a5f8317c2|3818|file|local|vector|||1.527||
+remove_both|function|4179229d6b086fbb|||||||||||||||
+results|stem|d9107c6d92471914|c6fbedc67c36611d|c12bdc5bd9880a7f|1767768831||t19458.6324032092s|78f522bd53591159|1676010|rds|local|vector|||0.328||
+Room|object|62e2e7c3457cd748|||||||||||||||
+vertical_lines|function|18ae0b56c415a8cd|||||||||||||||
