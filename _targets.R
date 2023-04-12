@@ -24,13 +24,13 @@ options(clustermq.scheduler = "multicore")
 tar_source()
 # source("other_functions.R") # Source other scripts as needed. # nolint
 
-# Replace the target list below with your own:
 list(
+  tar_target(orders, seq(10, 50, 2)),
+  tar_target(seeds, 42:44),
   tar_target(
-    name = results,
-    command = {
-      X <- list.files(here("results"), full.names = TRUE)
-      map_dfr(X, read_rds)}
+    results,
+    random_room(orders, seeds),
+    pattern = cross(orders, seeds)
   ),
   tar_target(
     name = meszka,
@@ -45,7 +45,7 @@ list(
         left_join(meszka) %>%
         mutate(
           `t3 - t1` = t3 - t1,
-          r3 = t3/nc2
+                 r3 = t3 / nc2
         ) %>%
         select(n, nc2, t1, t2, t3, r1, r2, r3)
     }

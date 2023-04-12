@@ -13,7 +13,7 @@ all_pairs <- function(x) {
 
 all_ordered_pairs <- function(x) {
   
-  y <- expand_grid(i = 1:x, j = 1:x)
+  y <- tidyr::expand_grid(i = 1:x, j = 1:x)
   
   y %>%
     mutate(ffs = map2(i, j, c)) %>%

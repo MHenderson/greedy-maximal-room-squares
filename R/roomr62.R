@@ -13,7 +13,7 @@ Room <- R6Class(
     initialize = function(size = NA) {
       self$size <- size
       self$symbols <- 0:(self$size - 1)
-      self$cells <- expand_grid(row = 1:(self$size - 1), col = 1:(self$size - 1)) %>%
+      self$cells <- tidyr::expand_grid(row = 1:(self$size - 1), col = 1:(self$size - 1)) %>%
         mutate(first = as.integer(NA), second = as.integer(NA)) %>%
         mutate(avail = list(0:(self$size - 1)))
       self$free_pairs <- all_pairs(self$size)
