@@ -12,11 +12,11 @@ random_room <- function(order, seed) {
   }
   
   tibble(
-    seed = as.integer(seed),
-    n = as.integer(order),
+        seed = as.integer(seed),
+           n = as.integer(order),
     n_filled = as.integer(r$n_filled),
-    volume = r$volume,
-    cells = list(r$cells %>% select(row, col, first, second))
+      volume = r$volume#,
+       #cells = list(r$cells |> select(row, col, first, second))
   )
 
 }
