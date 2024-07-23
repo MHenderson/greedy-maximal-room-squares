@@ -8,7 +8,7 @@ tar_option_set(
 tar_source()
 
 list(
-  tar_target(orders, seq(2, 22, 2)),
+  tar_target(orders, seq(2, 40, 2)),
   tar_target(
     results,
     tibble(
@@ -40,7 +40,14 @@ list(
   ),
   tar_target(
     name = final_results_as_flextable,
-    command = flextable(final_results) |> theme_vanilla()
+    command = {
+      set_flextable_defaults(
+        font.size = 6,
+        padding = 6,
+        theme_fun = theme_zebra
+      )
+      flextable(final_results)
+    }
   ),
   tar_target(
     name = save_as_png,
