@@ -8,7 +8,7 @@ tar_option_set(
 tar_source()
 
 list(
-  tar_target(name = orders, command = seq(2, 50, 2)),
+  tar_target(name = orders, command = seq(2, 60, 2)),
   tar_target(
     name = results,
     command = {
