@@ -2,13 +2,15 @@ library(targets)
 
 tar_option_set(
   packages = c("dplyr", "flextable", "here", "purrr", "readr", "tibble", "tidyr", "wallis"),
-  format = "rds"
+  format = "rds",
+  memory = "transient",
+  garbage_collection = TRUE
 )
 
 tar_source()
 
 list(
-  tar_target(name = orders, command = seq(2, 76, 2)),
+  tar_target(name = orders, command = seq(2, 78, 2)),
   tar_target(
     name = results,
     command = {
