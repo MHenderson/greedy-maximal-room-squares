@@ -1,7 +1,7 @@
 library(targets)
 
 tar_option_set(
-  packages = c("dplyr", "flextable", "here", "purrr", "readr", "tibble", "tidyr", "wallis"),
+  packages = c("dplyr", "flextable", "ggplot2", "here", "purrr", "readr", "tibble", "tidyr", "wallis"),
   format = "rds",
   memory = "transient",
   garbage_collection = TRUE
@@ -45,6 +45,18 @@ list(
     }
   ),
   tar_target(
+    name = plot_results,
+    command = {
+      ggplot(results, aes(n, volume, colour = name)) +
+        geom_line() +
+        theme_bw() +
+        theme(
+          legend.position = "bottom",
+          legend.title = element_blank()
+        )
+    }
+  ),
+  tar_target(
     name = final_results_as_flextable,
     command = {
       set_flextable_defaults(
@@ -54,6 +66,10 @@ list(
       )
       flextable(final_results)
     }
+  ),
+  tar_target(
+    name = save_plot_results,
+    command = ggsave(plot = plot_results, filename = "png/plot-results.png", height = 1000, width = 1200, units = "px")
   ),
   tar_target(
        name = save_as_png,
